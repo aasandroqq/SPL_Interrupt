@@ -20,6 +20,7 @@
 
 #define BUTTON_INFO() GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0)
 
+int value = -1;
 
 char str1[] = "Hello";
 char str2[] = "again";
@@ -79,65 +80,30 @@ int RandomNumber(){
 	srand(time(NULL));
 	return rand()%5;
 }
-void EXTI0_IRQHandler(void) {
-    
-    if (EXTI_GetITStatus(EXTI_Line0) != RESET) {
-        
-        delay_ms(2000);
-		status = BUTTON_INFO();
-		if(!status){
-			int value = RandomNumber();
-			switch(value){
-				case 0 : LCD_ShowStr(str1);break;
-				case 1 : LCD_ShowStr(str2);break;
-				case 2 : LCD_ShowStr(str3);break;
-				case 3 : LCD_ShowStr(str4);break;
-				case 4 : LCD_ShowStr(str5);break;
-				default :  LCD_ShowStr("No data");break;
-			}
-			delay_ms(8000);
-		} else { 
-			ClearLCD();
-		}
-		delay_ms(2000);
-        EXTI_ClearITPendingBit(EXTI_Line0);
-    }
-}
- 
-void EXTI15_10_IRQHandler(void) {
-    if (EXTI_GetITStatus(EXTI_Line12) != RESET) {
-delay_ms(2000);
-		status = BUTTON_INFO();
-		if(!status){
-			int value = RandomNumber();
-			switch(value){
-				case 0 : LCD_ShowStr(str1);break;
-				case 1 : LCD_ShowStr(str2);break;
-				case 2 : LCD_ShowStr(str3);break;
-				case 3 : LCD_ShowStr(str4);break;
-				case 4 : LCD_ShowStr(str5);break;
-				default :  LCD_ShowStr("No data");break;
-			}
-			delay_ms(8000);
-		} else { 
-			ClearLCD();
-		}
-		delay_ms(2000);
-				EXTI_ClearITPendingBit(EXTI_Line12);
-    }
-}
+
 int main(void)
 {
 	LCD_Pin_Initialize();
 	LCD_Init();
-	Button_Init();
 	SysTick_Config(SystemCoreClock/1000);
 	
 	while(1){
-		
 		delay_ms(2000);
-	}
+		
+			value = RandomNumber();
+			switch(value){
+				case 0 : LCD_ShowStr(str1);break;value = -1;
+				case 1 : LCD_ShowStr(str2);break;value = -1;
+				case 2 : LCD_ShowStr(str3);break;value = -1;
+				case 3 : LCD_ShowStr(str4);break;value = -1;
+				case 4 : LCD_ShowStr(str5);break;value = -1;
+				default :  LCD_ShowStr("No data");break;
+			}
+			
+		}
+		delay_ms(2000);
 }
+
 
 
 
